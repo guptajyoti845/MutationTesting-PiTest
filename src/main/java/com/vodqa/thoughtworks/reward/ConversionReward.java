@@ -1,25 +1,25 @@
-package com.wiredbraincoffee.reward;
+package com.vodqa.thoughtworks.reward;
 
-import com.wiredbraincoffee.product.Product;
+import com.vodqa.thoughtworks.product.Product;
 
 import java.util.List;
 
-public class RewardByConversionService extends RewardService {
+public class ConversionReward extends RewardService {
     private double amount;
 
     @Override
-    public RewardInformation applyReward(
+    public Reward applyReward(
             List<Product> order, long customerPoints) {
-        RewardInformation rewardInformation = new RewardInformation();
+        Reward reward = new Reward();
 
-        if (customerPoints >= neededPoints) {
-            double orderTotal = calculateTotal(order);
+        if (customerPoints >= minimumRequiredPoints) {
+            double orderTotal = total(order);
             if (orderTotal > getAmount()) {
-                rewardInformation = new RewardInformation(getNeededPoints(), getAmount());
+                reward = new Reward(getMinimumRequiredPoints(), getAmount());
             }
         }
 
-        return rewardInformation;
+        return reward;
     }
 
     public double getAmount() {

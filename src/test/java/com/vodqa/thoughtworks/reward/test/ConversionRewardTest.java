@@ -1,4 +1,4 @@
-package com.wiredbraincoffee.reward.test;
+package com.vodqa.thoughtworks.reward.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,54 +10,54 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.wiredbraincoffee.product.Product;
-import com.wiredbraincoffee.reward.RewardByConversionService;
-import com.wiredbraincoffee.reward.RewardInformation;
+import com.vodqa.thoughtworks.product.Product;
+import com.vodqa.thoughtworks.reward.ConversionReward;
+import com.vodqa.thoughtworks.reward.Reward;
 
-public class RewardByConversionServiceTest {
-    private RewardByConversionService reward = null;
+public class ConversionRewardTest {
+    private ConversionReward reward = null;
 
     @BeforeEach
     void setUp() {
-        reward = new RewardByConversionService();
+        reward = new ConversionReward();
         reward.setAmount(10);
-        reward.setNeededPoints(100);
+        reward.setMinimumRequiredPoints(100);
     }
 
     @Test
     @DisplayName("When empty order and zero points no reward should be applied")
     void emptyOrderZeroPoints() {
-        RewardInformation info = reward.applyReward(getEmptyOrder(), 0);
+        Reward info = reward.applyReward(getEmptyOrder(), 0);
 
         assertEquals(0, info.getDiscount());
-        assertEquals(0, info.getPointsRedeemed());
+        assertEquals(0, info.getRedeemedPoints());
     }
 
     @Test
     @DisplayName("When not enough points no reward should be applied")
     void notEnoughPoints() {
-        RewardInformation info = reward.applyReward(getSampleOrder(), 10);
+        Reward info = reward.applyReward(getSampleOrder(), 10);
 
         assertEquals(0, info.getDiscount());
-        assertEquals(0, info.getPointsRedeemed());
+        assertEquals(0, info.getRedeemedPoints());
     }
 
     @Test
     @DisplayName("When empty order and enough points no reward should be applied")
     void emptyOrderEnoughPoints() {
-        RewardInformation info = reward.applyReward(getEmptyOrder(), 200);
+        Reward info = reward.applyReward(getEmptyOrder(), 200);
 
         assertEquals(0, info.getDiscount());
-        assertEquals(0, info.getPointsRedeemed());
+        assertEquals(0, info.getRedeemedPoints());
     }
 
     @Test
     @DisplayName("When enough points and order total is greater than amount reward should be applied")
     void enoughPointsOrderTotalGreaterThanAmount() {
-        RewardInformation info = reward.applyReward(getSampleOrder(), 100);
+        Reward info = reward.applyReward(getSampleOrder(), 100);
 
         assertEquals(reward.getAmount(), info.getDiscount());
-        assertEquals(reward.getNeededPoints(), info.getPointsRedeemed());
+        assertEquals(reward.getMinimumRequiredPoints(), info.getRedeemedPoints());
     }
 
     @Test

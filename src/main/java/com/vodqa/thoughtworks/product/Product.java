@@ -1,4 +1,4 @@
-package com.wiredbraincoffee.product;
+package com.vodqa.thoughtworks.product;
 
 public class Product {
     private long id;

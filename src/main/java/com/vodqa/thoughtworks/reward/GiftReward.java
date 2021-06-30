@@ -1,32 +1,32 @@
-package com.wiredbraincoffee.reward;
+package com.vodqa.thoughtworks.reward;
 
-import com.wiredbraincoffee.product.Product;
+import com.vodqa.thoughtworks.product.Product;
 
 import java.util.List;
 import java.util.Optional;
 
-public class RewardByGiftService extends RewardService {
+public class GiftReward extends RewardService {
     private long giftProductId;
 
     @Override
-    public RewardInformation applyReward(
+    public Reward applyReward(
             List<Product> order, long customerPoints) {
-        RewardInformation rewardInformation = new RewardInformation();
+        Reward reward = new Reward();
 
-        if(customerPoints >= neededPoints) {
+        if(customerPoints >= minimumRequiredPoints) {
             Optional<Product> result = order
                     .stream()
                     .filter(p -> p.getId() == getGiftProductId())
                     .findAny();
             if(result.isPresent()) {
-                rewardInformation = new RewardInformation(
-                        getNeededPoints(),
+                reward = new Reward(
+                        getMinimumRequiredPoints(),
                         result.get().getPrice()
                 );
             }
         }
 
-        return rewardInformation;
+        return reward;
     }
 
     public long getGiftProductId() {
