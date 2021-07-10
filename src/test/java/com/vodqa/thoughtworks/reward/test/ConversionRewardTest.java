@@ -63,22 +63,37 @@ public class ConversionRewardTest {
     @Test
     @DisplayName("Exception is thrown when invalid amount is set")
     void exceptionThrownWhenInvalidAmount() {
-        long amount = -1;
+        long amount = 0;
         assertThrows(RuntimeException.class, () -> {
-        	reward.setAmount(amount);
+            reward.setAmount(amount);
         });
     }
 
-	private List<Product> getEmptyOrder() {
+
+    @Test
+    @DisplayName("When points and order totals equals amount reward should not be applied ")
+    void enoughPointsOrderTotalEqualAmount() {
+        Reward _reward = reward.applyReward(getSampleOrder(10.0), 100);
+        assertEquals(0, _reward.getDiscount());
+        assertEquals(0, _reward.getRedeemedPoints());
+    }
+
+    private List<Product> getEmptyOrder() {
         return Arrays.asList();
     }
 
+    private List<Product> getSampleOrder(double total) {
+        Product bigDecaf = new Product(1, "Big Decaf", total);
+        return Arrays.asList(
+                bigDecaf);
+    }
+
     private List<Product> getSampleOrder() {
-        Product bigDecaf = new Product(1, "Big Decaf", 2.49);
-        Product bigLatte = new Product(2, "Big Latte", 2.99);
-        Product bigTea = new Product(3, "Big Tea", 2.99);
+        Product decaf = new Product(1, "Decaf", 2.49);
+        Product latte = new Product(2, "Latte", 2.99);
+        Product tea = new Product(3, "Tea", 2.99);
         Product espresso = new Product(4, "Espresso", 2.99);
         return Arrays.asList(
-                bigDecaf, bigLatte, bigTea, espresso);
+                decaf, latte, tea, espresso);
     }
 }

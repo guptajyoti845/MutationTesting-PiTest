@@ -32,7 +32,7 @@ public class GiftRewardTest {
     @DisplayName("Reward applied with enough points")
     void rewardApplied() {
         Reward info = reward.applyReward(
-                buildSampleOrder(10), 200
+                buildSampleOrder(4), 100
         );
 
         assertAll("Reward info errors",
@@ -42,10 +42,26 @@ public class GiftRewardTest {
         );
     }
 
+
+    @Test
+    @DisplayName("Reward not applied with enough points because gift product not in order")
+    void giftProductNotInOrder() {
+        Reward info = reward.applyReward(
+                buildSampleOrder(2), 100
+        );
+
+        assertAll("Reward info errors",
+                () -> assertNotNull(info),
+                () -> assertEquals(0, info.getDiscount()),
+                () -> assertEquals(0, info.getRedeemedPoints())
+        );
+    }
+
+
     @Test
     @DisplayName("Exception is thrown when invalid product ID is set")
     void exceptionThrownWhenInvalidProductID() {
-        long productId = -1;
+        long productId = 0;
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             reward.setGiftProductId(productId);
         });
